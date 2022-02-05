@@ -12,8 +12,7 @@ void MovingProcessor::update()
     for(auto& ellips : ellipses) {
         ellips.rot_angle += ellips.rotating_speed;
 
-        if(ellips.parent == nullptr ||
-           ellips.moving_speed == 0)
+        if(ellips.parent == nullptr)
             continue;
 
         double a = ellips.parent->rect.width()  / 2,
