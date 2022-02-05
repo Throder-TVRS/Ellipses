@@ -7,21 +7,24 @@ MovingProcessor::MovingProcessor()
     ellipses[2].parent = &ellipses[1];
 }
 
-void MovingProcessor::update(float deltaSeconds)
+void MovingProcessor::update()
 {
-    static double time = 0;
-    time += deltaSeconds;
     for(auto& ellips : ellipses) {
-        ellips.angle += ellips.rotating_speed;
+        ellips.rot_angle += ellips.rotating_speed;
 
-        if(ellips.parent == nullptr)
+        if(ellips.parent == nullptr ||
+           ellips.moving_speed == 0)
             continue;
 
-        double a = ellips.parent->rect.width() / 2, b = ellips.parent->rect.height() / 2;
-        double phi = ellips.moving_speed * time;
-        double rho =  a * b / std::sqrt(b * b * cos(phi) * cos (phi) + a * a * sin(phi) * sin(phi));
-        double x = ellips.parent->rect.center().x() + rho * cos(phi) - ellips.rect.width() / 2;
-        double y = ellips.parent->rect.center().y() + rho * sin(phi) - ellips.rect.height() / 2;
+        double a = ellips.parent->rect.width()  / 2,
+               b = ellips.parent->rect.height() / 2;
+
+        ellips.mov_angle += ellips.moving_speed * 0.02;
+        double rho =  a * b / std::sqrt(b * b * cos(ellips.mov_angle) * cos (ellips.mov_angle) +
+                                        a * a * sin(ellips.mov_angle) * sin(ellips.mov_angle));
+
+        double x = ellips.parent->rect.center().x() + rho * cos(ellips.mov_angle) - ellips.rect.width() / 2;
+        double y = ellips.parent->rect.center().y() + rho * sin(ellips.mov_angle) - ellips.rect.height() / 2;
 
         QSize size = ellips.rect.size();
         ellips.rect.setX(x);
@@ -37,9 +40,9 @@ void MovingProcessor::redraw(QPainter &painter)
     for(auto& ellips : ellipses) {
         QPoint center = ellips.rect.center();
 
-        if(ellips.angle) {
+        if(ellips.rot_angle) {
             painter.translate(center.x(), center.y());
-            painter.rotate(ellips.angle);
+            painter.rotate(ellips.rot_angle);
             painter.translate(-center.x(), -center.y());
         }
 

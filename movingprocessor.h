@@ -10,15 +10,16 @@ class MovingProcessor
 {
     struct Ellips {
         double rotating_speed;  // Скорость вращения
-        double angle;           // Текущий угол относительно оси ОХ
+        double rot_angle;       // Угол поворота эллипса относительно оси ОХ
         QRect rect;             // Прямоугольник, задающий эллипс
         Ellips *parent;         // Указатель на родительский эллипс
         double moving_speed;    // Скорость передвижения по родительскому эллипсу
+        double mov_angle;       // Угол поворота центра эллипса по родительскому эллипсу
     };
 
 public:
     MovingProcessor();
-    void update(float deltaSeconds);
+    void update();
     void redraw(QPainter& painter);
 
     std::vector<Ellips> ellipses;

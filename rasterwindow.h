@@ -30,6 +30,5 @@ private:
 
     QBackingStore *m_backingStore = nullptr;
     MovingProcessor*  mp;
-    QElapsedTimer m_updateTimer;
     bool m_isAnimating = false;
 };

@@ -60,11 +60,7 @@ void RasterWindow::renderNow()
 
 void RasterWindow::updateScene()
 {
-    float elapsedSeconds = float(m_updateTimer.elapsed()) / 1000.f;
-    std::cerr << elapsedSeconds << std::endl;
-
-    m_updateTimer.restart();
-    mp->update(elapsedSeconds);
+    mp->update();
 }
 
 void RasterWindow::renderScene()
